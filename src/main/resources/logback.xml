@@ -1,0 +1,36 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [traceId=%X{traceId}, spanId=%X{spanId}] [%thread] %logger{36} - %msg%n
+        </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\Deployments\MTO\logs\ruscoreapi.log</file>
+
+        <encoder>
+            <pattern>%date [traceId=%X{traceId}, spanId=%X{spanId}] %level [%thread] %logger{10} [%file:%line]  %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/demo.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logback/demo.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>  
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
+                <pattern>{"traceId":"%X{traceId}", "spanId":"%X{spanId}"}</pattern>
+            </provider>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STASH" />
+    </root>
+
+</configuration>
