@@ -16,9 +16,9 @@
     </appender>
 
     <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/demo.log</file>
+        <file>logs/elk.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logback/demo.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logback/elk.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>  
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
@@ -28,9 +28,21 @@
         </encoder>
     </appender>
 
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/spring.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logback/spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>  
+        <encoder>
+            <pattern>%date [traceId=%X{traceId}, spanId=%X{spanId}] %level [%thread] %logger{10} [%file:%line]  %msg%n </pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="STASH" />
+        <appender-ref ref="FILE" />
     </root>
 
 </configuration>
