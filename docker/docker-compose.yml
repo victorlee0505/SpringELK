@@ -19,6 +19,19 @@ services:
       - "9200:9200"
       - "9300:9300"
 
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.11.1
+    container_name: apm-server
+    command: -e --strict.perms=false
+    volumes:
+      - ./apm-server/apm-server.yml:/usr/share/apm-server/apm-server.yml
+    user: root
+    ports:
+      - "8200:8200"
+      - "14250:14250"
+    depends_on:
+      - elasticsearch
+
   logstash:
     image: docker.elastic.co/logstash/logstash:7.11.1
     container_name: logstash
@@ -38,6 +51,7 @@ services:
     image: docker.elastic.co/beats/metricbeat:7.11.1
     container_name: metricbeat
     command: -e --strict.perms=false # -e flag to log to stderr and disable syslog/file output
+    restart: always
     volumes:
       - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
       # - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -46,6 +60,7 @@ services:
       # - /:/hostfs:ro
     user: root
     depends_on:
+      - kibana
       - elasticsearch
       - prometheus
 
@@ -59,14 +74,61 @@ services:
     depends_on:
       - elasticsearch
 
-  jaeger:
-    image: jaegertracing/all-in-one:1.21.0
-    container_name: jaeger
+  # jaeger:
+  #   image: jaegertracing/all-in-one:1.21.0
+  #   container_name: jaeger
+  #   ports:
+  #     - "5775:5775/udp"
+  #     - "6831:6831/udp"
+  #     - "6832:6832/udp"
+  #     - "5778:5778"
+  #     - "16686:16686"
+  #     - "14268:14268"
+  #     - "14250:14250"
+
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent:1.22.0
+    container_name: jaeger-agent
+    command: --reporter.grpc.host-port=apm-server:14250
     ports:
       - "5775:5775/udp"
       - "6831:6831/udp"
       - "6832:6832/udp"
       - "5778:5778"
-      - "16686:16686"
-      - "14268:14268"
-      - "14250:14250"
+    restart: on-failure
+    # depends_on:
+    #   - jaeger-collector
+
+  # jaeger-collector:
+  #   image: jaegertracing/jaeger-collector:1.22.0
+  #   container_name: jaeger-collector
+  #   command: --es.server-urls=http://elasticsearch:9200
+  #   ports:
+  #     - "14269:14269"
+  #     - "14268:14268"
+  #     - "14250:14250"
+  #     - "9411:9411"
+  #   restart: on-failure
+  #   environment:
+  #     - SPAN_STORAGE_TYPE=elasticsearch
+  #     - ES_SERVER_URLS=http://elasticsearch:9200
+  #     - ES_USERNAME=elastic
+  #     - ES_PASSWORD=MV59TSKhdfRMlNItFxEM
+  #   depends_on:
+  #     - elasticsearch
+
+  # jaeger-query:
+  #   image: jaegertracing/jaeger-query:1.22.0
+  #   container_name: jaeger-query
+  #   command: --es.server-urls=http://elasticsearch:9200
+  #   environment:
+  #     - SPAN_STORAGE_TYPE=elasticsearch
+  #     - ES_SERVER_URLS=http://elasticsearch:9200
+  #     - ES_USERNAME=elastic
+  #     - ES_PASSWORD=MV59TSKhdfRMlNItFxEM
+  #   ports:
+  #     - "16686:16686"
+  #     - "16687:16687"
+  #   restart: on-failure
+  #   depends_on:
+  #     - jaeger-agent
