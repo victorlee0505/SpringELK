@@ -4,7 +4,7 @@ server.host: 0.0.0.0
 ## X-Pack security credentials
 elasticsearch.hosts: http://elasticsearch:9200
 # elasticsearch DEFAULT CREDENTIAL
-# elasticsearch.username: elastic
-# elasticsearch.password: changeme
+elasticsearch.username: elastic
+elasticsearch.password: MV59TSKhdfRMlNItFxEM
 
 xpack.monitoring.ui.container.elasticsearch.enabled: true

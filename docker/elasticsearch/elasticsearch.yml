@@ -2,7 +2,7 @@ cluster.name: "docker-cluster"
 network.host: 0.0.0.0
 
 xpack.license.self_generated.type: trial
-xpack.security.enabled: false
+xpack.security.enabled: true
 xpack.monitoring.collection.enabled: true
 
 # avoid Error: the default discovery settings are unsuitable for production use;
