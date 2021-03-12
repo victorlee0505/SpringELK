@@ -12,4 +12,4 @@ apm-server.jaeger.grpc.host: "0.0.0.0:14250"
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
   username: "elastic"
-  password: "MV59TSKhdfRMlNItFxEM"
+  password: "changeme"

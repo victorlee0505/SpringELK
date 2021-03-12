@@ -118,4 +118,4 @@ setup.dashboards.enabled: true
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
   username: "elastic"
-  password: "MV59TSKhdfRMlNItFxEM"
+  password: "changeme"

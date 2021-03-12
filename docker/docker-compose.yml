@@ -28,7 +28,7 @@ services:
     user: root
     ports:
       - "8200:8200"
-      - "14250:14250"
+      - "14250:14250" # listen to jaeger-agent
     depends_on:
       - elasticsearch
 
@@ -54,10 +54,10 @@ services:
     restart: always
     volumes:
       - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
-      # - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-      # - /proc:/hostfs/proc:ro
-      # - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
     user: root
     depends_on:
       - kibana
@@ -113,7 +113,7 @@ services:
   #     - SPAN_STORAGE_TYPE=elasticsearch
   #     - ES_SERVER_URLS=http://elasticsearch:9200
   #     - ES_USERNAME=elastic
-  #     - ES_PASSWORD=MV59TSKhdfRMlNItFxEM
+  #     - ES_PASSWORD=changeme
   #   depends_on:
   #     - elasticsearch
 
@@ -125,7 +125,7 @@ services:
   #     - SPAN_STORAGE_TYPE=elasticsearch
   #     - ES_SERVER_URLS=http://elasticsearch:9200
   #     - ES_USERNAME=elastic
-  #     - ES_PASSWORD=MV59TSKhdfRMlNItFxEM
+  #     - ES_PASSWORD=changeme
   #   ports:
   #     - "16686:16686"
   #     - "16687:16687"
