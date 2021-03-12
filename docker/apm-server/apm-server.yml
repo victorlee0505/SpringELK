@@ -1,0 +1,15 @@
+server.name: apm-server
+network.host: 0.0.0.0
+
+apm-server.kibana.enabled: true
+apm-server.kibana.host: "kibana:5601"
+apm-server.kibana.username: "elastic"
+apm-server.kibana.password: "MV59TSKhdfRMlNItFxEM"
+
+apm-server.jaeger.grpc.enabled: true
+apm-server.jaeger.grpc.host: "0.0.0.0:14250"
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  username: "elastic"
+  password: "MV59TSKhdfRMlNItFxEM"
