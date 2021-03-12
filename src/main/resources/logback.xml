@@ -8,17 +8,9 @@
     </appender>
 
     <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>C:\Deployments\MTO\logs\ruscoreapi.log</file>
-
-        <encoder>
-            <pattern>%date [traceId=%X{traceId}, spanId=%X{spanId}] %level [%thread] %logger{10} [%file:%line]  %msg%n </pattern>
-        </encoder>
-    </appender>
-
-    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/elk.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logback/elk.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>elk.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>  
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
@@ -31,7 +23,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/spring.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logback/spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>spring.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>  
         <encoder>
