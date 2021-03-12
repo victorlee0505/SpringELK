@@ -11,19 +11,19 @@ metricbeat.config:
 
 metricbeat.modules:
 #----------------------------- Docker -----------------------------
-# - module: docker
-#   metricsets:
-#     - "container"
-#     - "cpu"
-#     - "diskio"
-#     - "healthcheck"
-#     - "info"
-#     #- "image"
-#     - "memory"
-#     - "network"
-#   hosts: ["unix:///var/run/docker.sock"]
-#   period: 10s
-#   enabled: true
+- module: docker
+  metricsets:
+    - "container"
+    - "cpu"
+    - "diskio"
+    - "healthcheck"
+    - "info"
+    #- "image"
+    - "memory"
+    - "network"
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s
+  enabled: true
 
 #----------------------------- Prometheus -----------------------------
 - module: prometheus
@@ -31,7 +31,12 @@ metricbeat.modules:
   hosts: ["prometheus:9090"]
   metrics_path: '/federate'
   query:
-    'match[]': '{__name__!=""}'
+    'match[]': '{job="springboot-demo-app"}'
+    # 'match[]': '{__name__=~"^job:.*"}'
+    # 'match[]': '{__name__=~"job:spring*"}'
+
+
+
 
 #------------------------------- MongoDB ------------------------------
 #- module: mongodb
