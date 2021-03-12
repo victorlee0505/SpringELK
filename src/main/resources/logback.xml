@@ -10,7 +10,7 @@
     <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/elk.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>elk.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/elk.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>  
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
@@ -23,7 +23,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/spring.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/spring.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>  
         <encoder>
