@@ -1,7 +1,17 @@
 version: "3.9"
 services:
+  prometheus:
+    image: prom/prometheus:v2.25.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
+    ports:
+      - "9090:9090/tcp"
+      - "9090:9090/udp"
+
   elasticsearch:
-    image: elasticsearch:7.10.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
     container_name: elasticsearch
     volumes:
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -24,8 +34,23 @@ services:
     depends_on:
       - elasticsearch
 
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.11.1
+    container_name: metricbeat
+    command: -e --strict.perms=false # -e flag to log to stderr and disable syslog/file output
+    volumes:
+      - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      # - /proc:/hostfs/proc:ro
+      # - /:/hostfs:ro
+    user: root
+    depends_on:
+      - elasticsearch
+      - prometheus
+
   kibana:
-    image: kibana:7.10.1
+    image: docker.elastic.co/kibana/kibana:7.11.1
     container_name: kibana
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml

@@ -1,0 +1,121 @@
+metricbeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    # Reload module configs as they change:
+    reload.enabled: true
+
+# metricbeat.autodiscover:
+#   providers:
+#     - type: docker
+#       hints.enabled: true
+
+metricbeat.modules:
+#----------------------------- Docker -----------------------------
+# - module: docker
+#   metricsets:
+#     - "container"
+#     - "cpu"
+#     - "diskio"
+#     - "healthcheck"
+#     - "info"
+#     #- "image"
+#     - "memory"
+#     - "network"
+#   hosts: ["unix:///var/run/docker.sock"]
+#   period: 10s
+#   enabled: true
+
+#----------------------------- Prometheus -----------------------------
+- module: prometheus
+  period: 10s
+  hosts: ["prometheus:9090"]
+  metrics_path: '/federate'
+  query:
+    'match[]': '{__name__!=""}'
+
+#------------------------------- MongoDB ------------------------------
+#- module: mongodb
+  #metricsets: ["dbstats", "status"]
+  #enabled: true
+  #period: 10s
+
+  # The hosts must be passed as MongoDB URLs in the format:
+  # [mongodb://][user:pass@]host[:port].
+  # The username and password can also be set using the respective configuration
+  # options. The credentials in the URL take precedence over the username and
+  # password configuration options.
+  #hosts: ["localhost:27017"]
+
+  # Username to use when connecting to MongoDB. Empty by default.
+  #username: user
+
+  # Password to use when connecting to MongoDB. Empty by default.
+  #password: pass
+
+#-------------------------------- MySQL -------------------------------
+#- module: mysql
+  #metricsets: ["status"]
+  #enabled: true
+  #period: 10s
+
+  # Host DSN should be defined as "user:pass@tcp(127.0.0.1:3306)/"
+  # The username and password can either be set in the DSN or using the username
+  # and password config options. Those specified in the DSN take precedence.
+  #hosts: ["root:secret@tcp(127.0.0.1:3306)/"]
+
+  # Username of hosts. Empty by default.
+  #username: root
+
+  # Password of hosts. Empty by default.
+  #password: secret
+
+  # By setting raw to true, all raw fields from the status metricset will be added to the event.
+  #raw: false
+
+#-------------------------------- Nginx -------------------------------
+#- module: nginx
+  #metricsets: ["stubstatus"]
+  #enabled: true
+  #period: 10s
+
+  # Nginx hosts
+  #hosts: ["http://127.0.0.1"]
+
+  # Path to server status. Default server-status
+  #server_status_path: "server-status"
+
+#----------------------------- PostgreSQL -----------------------------
+#- module: postgresql
+  #metricsets:
+    # Stats about every PostgreSQL database
+    #- database
+
+    # Stats about the background writer process's activity
+    #- bgwriter
+
+    # Stats about every PostgreSQL process
+    #- activity
+
+  #enabled: true
+  #period: 10s
+
+  # The host must be passed as PostgreSQL URL. Example:
+  # postgres://localhost:5432?sslmode=disable
+  # The available parameters are documented here:
+  # https://godoc.org/github.com/lib/pq#hdr-Connection_String_Parameters
+  #hosts: ["postgres://localhost:5432"]
+
+  # Username to use when connecting to PostgreSQL. Empty by default.
+  #username: user
+
+  # Password to use when connecting to PostgreSQL. Empty by default.
+  #password: pass
+
+setup.kibana.host: "kibana:5601"
+setup.dashboards.enabled: true
+
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  username: "elastic"
+  password: "MV59TSKhdfRMlNItFxEM"
